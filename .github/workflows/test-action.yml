@@ -1,15 +1,24 @@
-name: Test Action with Email Step
+name: Cache Workflow
 
 on:
-  workflow_dispatch: # allows manual trigger
-  push:             # also runs when you push
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: 23f1001296@ds.study.iitm.ac.in
-        run: echo "Hello, world!"
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: cache-58e4f82
+
+      - name: prime-cache-58e4f82
+        run: echo "Cache hit result: ${{ steps.cache.outputs.cache-hit }}"
