@@ -3,22 +3,24 @@ name: CI with Dependency Cache
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch: # allows manual trigger
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      # Dependency caching step
+      # Step 3: Dependency cache
       - name: prime-cache-58e4f82
         id: cache
         uses: actions/cache@v4
@@ -27,13 +29,19 @@ jobs:
           key: cache-58e4f82
           restore-keys: cache-58e4f82
 
+      # Step 4: Install dependencies (skipped if none)
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            echo "No requirements.txt, skipping install"
+          fi
 
-      - name: Run tests
-        run: |
-          echo "Run your tests or scripts here"
-          
+      # Step 5: Run any scripts / tests
+      - name: Run scripts
+        run: echo "This is where you can run your Python scripts or tests"
+
+      # Step 6: Show cache result
       - name: Show cache result
         run: echo "Cache hit? ${{ steps.cache.outputs.cache-hit }}"
