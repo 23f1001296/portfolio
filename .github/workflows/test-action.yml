@@ -1,13 +1,14 @@
-name: Test GitHub Action
+name: Test Action with Email Step
 
 on:
-  workflow_dispatch:   # allows manual trigger
+  workflow_dispatch: # allows manual trigger
+  push:             # also runs when you push
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: 23f1001296@ds.study.iitm.ac.in
