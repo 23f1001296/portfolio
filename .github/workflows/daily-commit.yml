@@ -1,0 +1,27 @@
+name: Daily Commit Automation
+
+# Run daily at 02:30 UTC
+on:
+  schedule:
+    - cron: "30 2 * * *"  # Adjust hour/minute if needed
+  workflow_dispatch:      # Allow manual trigger
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add commit by 23f1001296@ds.study.iitm.ac.in
+        run: |
+          # Create/update a file with timestamp
+          echo "Last run: $(date -u)" >> daily-update.txt
+          git config --local user.email "23f1001296@ds.study.iitm.ac.in"
+          git config --local user.name "GitHub Actions Bot"
+          git add daily-update.txt
+          git commit -m "Automated daily commit by 23f1001296@ds.study.iitm.ac.in" || exit 0
+          git push
