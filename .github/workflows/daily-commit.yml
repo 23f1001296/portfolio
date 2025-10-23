@@ -1,10 +1,10 @@
 name: Daily Commit Automation
 
-# Run daily at 02:30 UTC
+# Run daily at 02:30 UTC (adjust if needed)
 on:
   schedule:
-    - cron: "30 2 * * *"  # Adjust hour/minute if needed
-  workflow_dispatch:      # Allow manual trigger
+    - cron: "30 2 * * *"
+  workflow_dispatch:  # allow manual trigger
 
 jobs:
   daily-commit:
@@ -18,10 +18,14 @@ jobs:
 
       - name: Add commit by 23f1001296@ds.study.iitm.ac.in
         run: |
-          # Create/update a file with timestamp
+          # Create or update a file with the current timestamp
           echo "Last run: $(date -u)" >> daily-update.txt
+
+          # Configure Git
           git config --local user.email "23f1001296@ds.study.iitm.ac.in"
           git config --local user.name "GitHub Actions Bot"
+
+          # Commit and push changes
           git add daily-update.txt
           git commit -m "Automated daily commit by 23f1001296@ds.study.iitm.ac.in" || exit 0
           git push
